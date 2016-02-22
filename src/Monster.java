@@ -3,8 +3,8 @@
  */
 public class Monster extends Character {
     Ai ai;
-    public Monster(Position pos,Ai ai,String name) {
-        super(pos,name);
+    public Monster(Position pos,Ai ai,String name,int maxHealth) {
+        super(pos,name,maxHealth);
         this.ai = ai;
         alignment = Alignment.EVIL;
     }

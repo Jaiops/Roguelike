@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Johan on 2016-02-17.
@@ -46,19 +47,12 @@ public class GamePanel extends JPanel{
                 g.setColor(Color.blue);
             }
         }
-        ArrayList<Monster> monsters = m.getMonsters();
+        CopyOnWriteArrayList<Monster> monsters = m.getMonsters();
         for(Monster mon : monsters){
             g.setColor(Color.magenta);
             g.drawOval(mon.getPos().getX()*32,mon.getPos().getY()*32,32,32);
         }
-        /*ArrayList<Position> linePos = fov.calculateLine(game.getC().getPos(), new Position(6, 5));
 
-
-        for(Position p : linePos){
-            System.out.println("POSX :"+p.getX()+" POSY: "+p.getY());
-            g.setColor(Color.YELLOW);
-            g.fillRect(p.getX() * 32, p.getY() * 32, 32, 32);
-        }*/
         g.setColor(Color.blue);
         Character c = game.getC();
         g.fillOval(c.getPos().getX() * 32, c.getPos().getY() * 32, 32, 32);

@@ -1,17 +1,18 @@
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Johan on 2016-02-16.
  */
 public class Map {
     Tile[][] tiles;
-    ArrayList<Monster> monsters;
+    CopyOnWriteArrayList<Monster> monsters;
 
     public Map(){
-        monsters = new ArrayList<>();
+        monsters = new CopyOnWriteArrayList<>();
     }
 
-    public ArrayList<Monster> getMonsters() {
+    public CopyOnWriteArrayList<Monster> getMonsters() {
         return monsters;
     }
 
@@ -21,7 +22,9 @@ public class Map {
     public void addMonster(Monster m){
         monsters.add(m);
     }
-
+    public void removeMonster(Monster m){
+        monsters.remove(m);
+    }
     public void buildMap(){
         tiles = new Tile[15][15];
         for(int i = 0; i<15;i++){
@@ -39,5 +42,9 @@ public class Map {
         tiles[4][4].blocking = true;
 
 
+    }
+    public void kill(Character c){
+        tiles[c.getPos().getY()][c.getPos().getX()].setOccupant(null);
+        monsters.remove(c);
     }
 }

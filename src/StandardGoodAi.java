@@ -3,11 +3,11 @@ import java.util.ArrayList;
 /**
  * Created by Johan on 2016-02-16.
  */
-public class StandardAi implements Ai{
+public class StandardGoodAi implements Ai{
     Pathfinding p;
     FieldOfView fov;
     Character target;
-    public StandardAi(){
+    public StandardGoodAi(){
         fov = new FieldOfView();
         p = new Pathfinding();
         target = null;
@@ -16,7 +16,7 @@ public class StandardAi implements Ai{
     @Override
     public void takeTurn(Map m,Character c) {
         ArrayList<Position> positions= fov.calculateFov(m,c.getPos());
-        findGoodTarget(m,positions);
+        findEvilTarget(m,positions);
         if(target!= null){
             ArrayList<Position> path = p.getPath(m, c.getPos(), target.getPos());
             if(path.size()>0){
@@ -28,10 +28,11 @@ public class StandardAi implements Ai{
             }
         }
     }
-    private Character findGoodTarget(Map m,ArrayList<Position> positions){
+    private Character findEvilTarget(Map m,ArrayList<Position> positions){
+        System.out.println("Finding targets");
         for(Position p : positions){
             Tile t = m.getTiles()[p.getY()][p.getX()];
-            if(t.hasOccupant() && t.getOccupant().getAlignment() == Alignment.GOOD){
+            if(t.hasOccupant() && t.getOccupant().getAlignment() == Alignment.EVIL){
                 target = m.getTiles()[p.getY()][p.getX()].getOccupant();
                 return target;
             }
