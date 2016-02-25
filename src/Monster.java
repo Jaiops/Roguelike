@@ -6,7 +6,7 @@ public class Monster extends Character {
     public Monster(Position pos,Ai ai,String name,int maxHealth) {
         super(pos,name,maxHealth);
         this.ai = ai;
-        alignment = Alignment.EVIL;
+        this.setAlignment(Alignment.EVIL);
     }
     public void takeTurn(Map m){
         ai.takeTurn(m,this);

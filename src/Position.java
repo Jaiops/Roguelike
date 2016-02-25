@@ -22,4 +22,12 @@ public class Position {
         Position p = (Position)obj;
         return (p.getX() == this.getX() && p.getY() == this.getY());
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

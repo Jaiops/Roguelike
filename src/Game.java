@@ -67,7 +67,10 @@ public class Game {
 
         }
         for(Monster mon: m[currentMap].getMonsters()){
-            mon.takeTurn(m[currentMap]);
+            if(mon.isAlive()){
+
+                mon.takeTurn(m[currentMap]);
+            }
         }
         /*
         for (Monster mon : m.getMonsters()){

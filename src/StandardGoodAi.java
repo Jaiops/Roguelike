@@ -24,7 +24,6 @@ public class StandardGoodAi implements Ai{
                        path.get(path.size()-1).getY()- c.getPos().getY(),m);
             }else{
                 System.out.println("Ajdå");
-
             }
         }
     }

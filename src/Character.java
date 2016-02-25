@@ -6,17 +6,19 @@ import java.awt.*;
 
 public class Character {
 
-    int damage;
-    Position pos;
-    int maxHealth;
-    int currentHealth;
-    Alignment alignment;
-    String name;
+    private int damage;
+    private Position pos;
+    private int maxHealth;
+    private int currentHealth;
+    private Alignment alignment;
+    private String name;
+    private boolean alive;
 
     public Character(Position pos,String name,int maxHealth) {
         this.pos = pos;
         this.name = name;
         this.maxHealth = maxHealth;
+        this.alive = true;
     }
 
     public void setPos(Position pos) {
@@ -25,6 +27,10 @@ public class Character {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isAlive() {
+        return alive;
     }
 
     public void setAlignment(Alignment al){
@@ -36,6 +42,9 @@ public class Character {
 
     public void takeDamage(int damage){
         this.currentHealth -= damage;
+        if(currentHealth<0){
+            alive = false;
+        }
     }
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;

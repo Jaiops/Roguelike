@@ -71,6 +71,9 @@ public class Pathfinding {
 
         while (!reached){
             n = getBestOpenNode(openList);
+            if(n == null){
+                return null;
+            }
             if(n.getP().equals(target)){
                 reached = true;
             }
@@ -93,6 +96,7 @@ public class Pathfinding {
                             opendNode.setParent(neighbor.getParent());
                         }
                     }else{
+
                         openList.add(neighbor);
                     }
                 }
@@ -130,7 +134,11 @@ public class Pathfinding {
         }
         return results;
     }
-    Node getBestOpenNode(ArrayList<Node> list){
+    private Node getBestOpenNode(ArrayList<Node> list){
+        if(list.size()<1){
+            return null;
+        }
+
         Node n = list.get(0);
         float f = n.getValueF();
         for(Node nod : list){
