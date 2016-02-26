@@ -8,7 +8,6 @@ public class Tile {
     boolean seen;
     ArrayList<Item> items;
     Character occupant;
-    Image i;
     Boolean blocking;
 
     public Tile(Boolean blocking) {

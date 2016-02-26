@@ -63,7 +63,10 @@ public class GamePanel extends JPanel{
         CopyOnWriteArrayList<Monster> monsters = m.getMonsters();
         for(Monster mon : monsters){
             g.setColor(Color.magenta);
-            g.drawOval(mon.getPos().getX()*32,mon.getPos().getY()*32,32,32);
+            if(vp.withinViewport(mon.getPos())){
+
+                g.drawOval(mon.getPos().getX()*32,mon.getPos().getY()*32,32,32);
+            }
         }
 
         g.setColor(Color.blue);

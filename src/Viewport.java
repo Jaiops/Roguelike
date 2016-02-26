@@ -40,6 +40,11 @@ public class Viewport {
         }
     }
 
+    public boolean withinViewport(Position p){
+
+        return p.getX() > currentX && p.getX() < currentX + sizeX
+                && p.getY() > currentY && p.getY() < currentY + sizeY;
+    }
     public int getCurrentX() {
         return currentX;
     }
