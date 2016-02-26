@@ -11,9 +11,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GamePanel extends JPanel{
     Game game;
     FieldOfView fov;
+    Viewport vp;
     public GamePanel(){
         game=new Game();
         fov = new FieldOfView();
+        try{
+            vp = new Viewport(8,8,game.getM());
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+
+
     }
 
     public synchronized void keyPressed(KeyEvent e) {
@@ -27,8 +37,9 @@ public class GamePanel extends JPanel{
         Map m = game.getM();
         Tile[][] tiles = m.getTiles();
         ArrayList<Position> fovPos =fov.calculateFov(m, game.getC().getPos());
-        for(int rows = 0;rows<tiles.length;rows++) {
-            for (int columns = 0; columns < tiles.length; columns++) {
+        vp.setNewPos(game.getC().getPos());
+        for(int rows = vp.getCurrentY();rows<vp.getSizeY();rows++) {
+            for (int columns = vp.getCurrentX(); columns < vp.getSizeX(); columns++) {
 
                 if (tiles[rows][columns].isBlocking()) {
                     g.setColor(Color.black);
