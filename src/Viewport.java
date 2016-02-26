@@ -49,10 +49,10 @@ public class Viewport {
     }
 
     public int getSizeX() {
-        return currentX+sizeX;
+        return sizeX;
     }
 
     public int getSizeY() {
-        return currentY+sizeY;
+        return sizeY;
     }
 }

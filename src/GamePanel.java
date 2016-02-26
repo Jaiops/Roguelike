@@ -16,7 +16,7 @@ public class GamePanel extends JPanel{
         game=new Game();
         fov = new FieldOfView();
         try{
-            vp = new Viewport(8,8,game.getM());
+            vp = new Viewport(14,14,game.getM());
 
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -31,20 +31,22 @@ public class GamePanel extends JPanel{
         repaint();
     }
 
-
-
     public synchronized void draw(Graphics g){
         Map m = game.getM();
         Tile[][] tiles = m.getTiles();
         ArrayList<Position> fovPos =fov.calculateFov(m, game.getC().getPos());
-        vp.setNewPos(game.getC().getPos());
-        for(int rows = vp.getCurrentY();rows<vp.getSizeY();rows++) {
-            for (int columns = vp.getCurrentX(); columns < vp.getSizeX(); columns++) {
 
-                if (tiles[rows][columns].isBlocking()) {
+        vp.setNewPos(game.getC().getPos());
+
+        for(int rows = 0;rows<vp.getSizeY();rows++) {
+            for (int columns = 0; columns < vp.getSizeX(); columns++) {
+                int y = rows + vp.getCurrentY();
+                int x = columns + vp.getCurrentX();
+                if (tiles[y][x].isBlocking()) {
                     g.setColor(Color.black);
-                } else{
-                    Position p = new Position(columns,rows);
+                }
+                else{
+                    Position p = new Position(x,y);
                     if(fovPos.contains(p)){
 
                         g.setColor(Color.white);
@@ -66,7 +68,7 @@ public class GamePanel extends JPanel{
 
         g.setColor(Color.blue);
         Character c = game.getC();
-        g.fillOval(c.getPos().getX() * 32, c.getPos().getY() * 32, 32, 32);
+        g.fillOval((c.getPos().getX()-vp.getCurrentX()) * 32, (c.getPos().getY()-vp.getCurrentY()) * 32, 32, 32);
 
 
     }

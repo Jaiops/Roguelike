@@ -8,6 +8,7 @@ public class FieldOfView {
 
     }
     public ArrayList<Position> calculateFov(Map m, Position p){
+
         ArrayList<Position> results = new ArrayList<>();
         int x = p.getX()-5;
         int y = p.getY()-5;
@@ -26,6 +27,7 @@ public class FieldOfView {
         if(highY > m.getTiles().length){
             highY = m.getTiles().length;
         }
+
         for (int i = x; i<highX; i++){
             for (int j = y; j<highY;j++){
                 if(i == x || j == y || j == highY-1|| i == highX-1){
@@ -48,8 +50,8 @@ public class FieldOfView {
             }
         }
         return results;
-
     }
+
     public ArrayList<Position> calculateLine(Position p1, Position p2){
         ArrayList<Position> result = new ArrayList<>();
         int dx = Math.abs(p2.getX() - p1.getX());
