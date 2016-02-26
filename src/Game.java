@@ -15,7 +15,7 @@ public class Game {
         m[1].buildMap();
         c = new Character(new Position(2,3),"Player",30);
         c.setAlignment(Alignment.GOOD);
-        c.setDamage(10);
+        c.setDamage(1);
         isPlaying = true;
 
         turn = 0;

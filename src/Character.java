@@ -18,6 +18,7 @@ public class Character {
         this.pos = pos;
         this.name = name;
         this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
         this.alive = true;
     }
 
@@ -38,6 +39,10 @@ public class Character {
     }
     public int getCurrentHealth() {
         return currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public void takeDamage(int damage){
