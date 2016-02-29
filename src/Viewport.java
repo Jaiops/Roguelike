@@ -4,12 +4,12 @@
  * Created by Johan on 2016-02-25.
  */
 public class Viewport {
-    int currentX;
-    int currentY;
-    int maxX;
-    int maxY;
-    int sizeX;
-    int sizeY;
+    private int currentX;
+    private int currentY;
+    private int maxX;
+    private int maxY;
+    private int sizeX;
+    private int sizeY;
 
     public Viewport(int sizeX, int sizeY, Map m) throws Exception {
         if(sizeX>m.getTiles().length){

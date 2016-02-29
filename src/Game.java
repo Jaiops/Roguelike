@@ -1,11 +1,11 @@
 import java.awt.event.KeyEvent;
 
 public class Game {
-    boolean isPlaying;
-    Character c;
-    Map[] m;
-    float turn;
-    int currentMap;
+    private boolean isPlaying;
+    private Character c;
+    private Map[] m;
+    private float turn;
+    private int currentMap;
     public Game(){
         currentMap = 0;
         m = new Map[2];

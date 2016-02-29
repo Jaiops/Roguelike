@@ -9,11 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Johan on 2016-02-17.
  */
 public class GamePanel extends JPanel{
-    Game game;
-    FieldOfView fov;
-    Viewport vp;
+    private Game game;
+    private FieldOfView fov;
+    private Viewport vp;
     public GamePanel(){
         game=new Game();
+
         fov = new FieldOfView();
         try{
             vp = new Viewport(14,14,game.getM());
@@ -22,8 +23,6 @@ public class GamePanel extends JPanel{
             System.out.println(e.getMessage());
             System.exit(-1);
         }
-
-
     }
 
     public synchronized void keyPressed(KeyEvent e) {
@@ -86,9 +85,9 @@ public class GamePanel extends JPanel{
 
         g.setColor(Color.blue);
         Character c = game.getC();
-        g.fillOval((c.getPos().getX()-vp.getCurrentX()) * 32, (c.getPos().getY()-vp.getCurrentY()) * 32, 32, 32);
-        g.drawString("Health: "+game.getC().getCurrentHealth()+"/"+game.getC
-                ().getMaxHealth(),500,500);
+        g.fillOval((c.getPos().getX() - vp.getCurrentX()) * 32, (c.getPos().getY() - vp.getCurrentY()) * 32, 32, 32);
+        g.drawString("Health: " + game.getC().getCurrentHealth() + "/" + game.getC
+                ().getMaxHealth(), 500,500);
 
     }
     private void drawHealthBar(Graphics g,int x, int y,Character ch){
@@ -104,7 +103,7 @@ public class GamePanel extends JPanel{
         }
         g.fillRect(x+3,y+26,(int)(26*percentage),5);
         g.setColor(Color.black);
-        g.drawRect(x+3,y+26,26,5);
+        g.drawRect(x + 3, y + 26,26,5);
     }
     public void paintComponent(Graphics g) {
 

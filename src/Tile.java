@@ -5,10 +5,10 @@ import java.util.ArrayList;
  * Created by Johan on 2016-02-16.
  */
 public class Tile {
-    boolean seen;
-    ArrayList<Item> items;
-    Character occupant;
-    Boolean blocking;
+    private boolean seen;
+    private ArrayList<Item> items;
+    private Character occupant;
+    private Boolean blocking;
 
     public Tile(Boolean blocking) {
         this.blocking = blocking;

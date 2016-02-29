@@ -4,9 +4,9 @@ import java.util.ArrayList;
  * Created by Johan on 2016-02-16.
  */
 public class StandardEvilAi implements Ai{
-    Pathfinding p;
-    FieldOfView fov;
-    Character target;
+    private Pathfinding p;
+    private FieldOfView fov;
+    private Character target;
     public StandardEvilAi(){
         fov = new FieldOfView();
         p = new Pathfinding();

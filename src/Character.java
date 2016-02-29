@@ -77,7 +77,8 @@ public class Character {
         Character occupant;
         if(tiles[newY][newX].hasOccupant()){
             occupant = tiles[newY][newX].getOccupant();
-            System.out.println(this.getName() + " Attacks " + occupant.getName());
+            System.out.println(this.getName() + " Attacks " + occupant.getName()+
+                    " for "+this.damage+" damage");
             occupant.takeDamage(this.getDamage());
             if(occupant.getCurrentHealth()<0){
                 map.kill(occupant);
@@ -88,7 +89,6 @@ public class Character {
             this.pos = new Position(newX,newY);
             tiles[newY][newX].setOccupant(this);
         }
-
     }
     public Position getPos() {
         return pos;
