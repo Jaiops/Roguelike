@@ -60,25 +60,101 @@ public class Map {
             }
         }
     }
+
+    private class Room{
+
+        int sizeX;
+        int sizeY;
+        int posY;
+        int posX;
+        protected Room(int minX, int minY, int maxX, int maxY){
+            Random r = new Random();
+
+            sizeX = r.nextInt(5)+1;
+            sizeY = r.nextInt(5)+1;
+            System.out.println(maxY + " "+minY);
+            posY = r.nextInt(maxY)+minY;
+            posX = r.nextInt(maxX)+minX;
+        }
+
+        public int getSizeX() {
+            return sizeX;
+        }
+
+        public int getSizeY() {
+            return sizeY;
+        }
+
+        public int getPosY() {
+            return posY;
+        }
+
+        public int getPosX() {
+            return posX;
+        }
+    }
     public void generateRoomsMap(){
-        Random r = new Random();
         tiles = new Tile[50][50];
         for(int i = 0 ; i<tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
                 tiles[i][j] = new Tile(true);
             }
         }
-        int x = r.nextInt(5)+1;
-        int y = r.nextInt(5)+1;
-        int posY = r.nextInt(tiles.length-y);
-        int posX = r.nextInt(tiles.length-x);
-        for(int i = 0 ; i<y; i++) {
-            for(int j = 0 ; j<x; j++) {
-                tiles[posY+y][posX+x] = new Tile(false);
+        Room[][] r = new Room[3][3];
+        for(int i = 0 ; i<3; i++) {
+            for(int j = 0 ; j<3; j++) {
+                r[i][j] = new Room(i*(tiles.length/3),j*(tiles.length/3),(tiles.length/3),(tiles.length/3));
             }
         }
+        FieldOfView fov = new FieldOfView();
+        for(int i = 0 ; i<3; i++) {
+            for(int j = 0 ; j<3; j++) {
+                for(int y = r[i][j].getPosY() ; y<r[i][j].getSizeY()+r[i][j].getPosY(); y++) {
+                    for(int x = r[i][j].getPosX() ; x<r[i][j].getSizeY()+r[i][j].getPosX(); x++) {
+                        tiles[y][x] = new Tile(false);
+                    }
+                }
+                if(i>0){
+                    Position p1 = new Position(r[i][j].getPosX(),r[i][j].getPosY());
+                    Position p2 = new Position(r[i-1][j].getPosX(),r[i-1][j].getPosY());
+                    ArrayList<Position> line=fov.calculateLine(p1, p2);
+                    for(Position p : line ){
+                        tiles[p.getY()][p.getX()] = new Tile(false);
+                    }
+                }
+                if(j>0){
+                    Position p1 = new Position(r[i][j].getPosX(),r[i][j].getPosY());
+                    Position p2 = new Position(r[i][j-1].getPosX(),r[i][j-1].getPosY());
+                    ArrayList<Position> line=fov.calculateLine(p1, p2);
+                    for(Position p : line ){
+                        tiles[p.getY()][p.getX()] = new Tile(false);
+                    }
+                }
+            }
+        }
+        printMap();
 
-
+    }
+    private void printMap(){
+        for(int i = 0 ; i<tiles.length; i++) {
+            for (int j = 0; j < tiles[i].length; j++) {
+                if(tiles[i][j].isBlocking()){
+                    System.out.print("#");
+                }else{
+                    System.out.print(".");                }
+            }
+            System.out.println();
+        }
+    }
+    public Position getFreePosition(){
+        Random r = new Random();
+        while(true){
+            Position p = new Position(r.nextInt(tiles.length),
+                    r.nextInt(tiles.length));
+            if(!tiles[p.getY()][p.getX()].isBlocking()){
+                return p;
+            }
+        }
     }
     private int[][] generateRoom(){
         return null;

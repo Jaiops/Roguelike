@@ -17,7 +17,7 @@ public class GamePanel extends JPanel{
 
         fov = new FieldOfView();
         try{
-            vp = new Viewport(14,14,game.getM());
+            vp = new Viewport(30,30,game.getM());
 
         }catch (Exception e){
             System.out.println(e.getMessage());

@@ -11,9 +11,10 @@ public class Game {
         m = new Map[2];
         m[0] = new Map();
         m[1] = new Map();
-        m[0].buildMap();
+        m[0].generateRoomsMap();
         m[1].buildMap();
-        c = new Character(new Position(2,3),"Player",30);
+
+        c = new Character(m[0].getFreePosition(),"Player",30);
         c.setAlignment(Alignment.GOOD);
         c.setDamage(1);
         isPlaying = true;
@@ -37,18 +38,31 @@ public class Game {
 
 
         switch (e.getKeyCode()){
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_NUMPAD4:
                 c.move(-1,0,m[currentMap]);
                 break;
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_NUMPAD8:
                 c.move(0,-1,m[currentMap]);
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_NUMPAD2:
                 c.move(0,1,m[currentMap]);
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_NUMPAD6:
                 c.move(1,0,m[currentMap]);
                 break;
+            case KeyEvent.VK_NUMPAD7:
+                c.move(-1,-1,m[currentMap]);
+                break;
+            case KeyEvent.VK_NUMPAD9:
+                c.move(1,-1,m[currentMap]);
+                break;
+            case KeyEvent.VK_NUMPAD1:
+                c.move(-1,1,m[currentMap]);
+                break;
+            case KeyEvent.VK_NUMPAD3:
+                c.move(1,1,m[currentMap]);
+                break;
+
             case KeyEvent.VK_D:
                 Monster mon = new Monster(new Position(4,5),new StandardEvilAi(),"Monster",10);
                 mon.setAlignment(Alignment.EVIL);
