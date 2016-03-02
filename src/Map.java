@@ -70,8 +70,8 @@ public class Map {
         protected Room(int minX, int minY, int maxX, int maxY){
             Random r = new Random();
 
-            sizeX = r.nextInt(5)+1;
-            sizeY = r.nextInt(5)+1;
+            sizeX = r.nextInt(5)+3;
+            sizeY = r.nextInt(5)+3;
             System.out.println(maxY + " "+minY);
             posY = r.nextInt(maxY)+minY;
             posX = r.nextInt(maxX)+minX;
