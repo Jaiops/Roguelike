@@ -1,20 +1,23 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Johan on 2016-02-16.
  */
 public class Tile {
     private boolean seen;
-    private ArrayList<Item> items;
+    private CopyOnWriteArrayList<Item> items;
     private Character occupant;
     private Boolean blocking;
 
     public Tile(Boolean blocking) {
+        items = new CopyOnWriteArrayList<>();
         this.blocking = blocking;
         this.seen = false;
         occupant = null;
     }
+
     public void setSeen(){
         seen = true;
     }
@@ -25,7 +28,7 @@ public class Tile {
         items.add(i);
     }
 
-    public ArrayList<Item> getItems() {
+    public CopyOnWriteArrayList<Item> getItems() {
         return items;
     }
 

@@ -17,7 +17,7 @@ public class GamePanel extends JPanel{
 
         fov = new FieldOfView();
         try{
-            vp = new Viewport(30,30,game.getM());
+            vp = new Viewport(13,13,game.getM());
 
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -28,6 +28,11 @@ public class GamePanel extends JPanel{
     public synchronized void keyPressed(KeyEvent e) {
         game.getAction(e);
         repaint();
+    }
+
+    private void drawItem(Graphics g, Item i){
+        CopyOnWriteArrayList<Item> items = game.getM().getItems();
+
     }
 
     private void drawTiles(Graphics g){
@@ -49,6 +54,11 @@ public class GamePanel extends JPanel{
                     if(fovPos.contains(p)){
 
                         g.setColor(Color.white);
+                        if(tiles[y][x].getItems().size()>0){
+                            g.setColor(Color.orange);
+
+                            g.fillRect(x * 32, y * 32,32,32);
+                        }
                     }else{
                         g.setColor(Color.gray);
 

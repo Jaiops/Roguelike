@@ -8,13 +8,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Map {
     private Tile[][] tiles;
     private CopyOnWriteArrayList<Monster> monsters;
+    private CopyOnWriteArrayList<Item> items;
+
 
     public Map(){
         monsters = new CopyOnWriteArrayList<>();
+        items = new CopyOnWriteArrayList<>();
     }
 
     public CopyOnWriteArrayList<Monster> getMonsters() {
         return monsters;
+    }
+
+    public CopyOnWriteArrayList<Item> getItems() {
+        return items;
     }
 
     public Tile[][] getTiles() {
@@ -22,6 +29,9 @@ public class Map {
     }
     public void addMonster(Monster m){
         monsters.add(m);
+    }
+    public void addItem(Item i){
+        items.add(i);
     }
     public void removeMonster(Monster m){
         monsters.remove(m);

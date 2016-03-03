@@ -7,14 +7,14 @@ public class Game {
     private float turn;
     private int currentMap;
     public Game(){
-        currentMap = 0;
+        currentMap = 1;
         m = new Map[2];
         m[0] = new Map();
         m[1] = new Map();
         m[0].generateRoomsMap();
         m[1].buildMap();
 
-        c = new Character(m[0].getFreePosition(),"Player",30);
+        c = new Character(m[currentMap].getFreePosition(),"Player",30);
         c.setAlignment(Alignment.GOOD);
         c.setDamage(1);
         isPlaying = true;
@@ -61,6 +61,10 @@ public class Game {
                 break;
             case KeyEvent.VK_NUMPAD3:
                 c.move(1,1,m[currentMap]);
+                break;
+            case KeyEvent.VK_A:
+                Item i = new Item("Item");
+                m[currentMap].getTiles()[3][3].addItem(i);
                 break;
 
             case KeyEvent.VK_D:
