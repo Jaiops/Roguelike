@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Johan on 2016-02-16.
@@ -13,13 +14,20 @@ public class Character {
     private Alignment alignment;
     private String name;
     private boolean alive;
+    private ArrayList<Item> inventory;
 
     public Character(Position pos,String name,int maxHealth) {
+
         this.pos = pos;
         this.name = name;
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
         this.alive = true;
+        inventory = new ArrayList<>();
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
     }
 
     public void setPos(Position pos) {

@@ -70,6 +70,23 @@ public class GamePanel extends JPanel{
             }
         }
     }
+    private void drawInventory(Graphics g){
+        int index = game.getIs().getIndex();
+        g.setColor(Color.black);
+        g.fillRect(10, 10, 150, 150);
+        int offset = 1;
+        for(Item i : game.getC().getInventory()){
+            if(index == offset-1){
+                g.setColor(Color.yellow);
+            }
+            else{
+                g.setColor(Color.white);
+            }
+            g.drawString(i.getName(),20,20*offset);
+            offset++;
+        }
+
+    }
     private void drawMonsters(Graphics g){
         CopyOnWriteArrayList<Monster> monsters = game.getM().getMonsters();
         for(Monster mon : monsters){
@@ -98,6 +115,9 @@ public class GamePanel extends JPanel{
         g.fillOval((c.getPos().getX() - vp.getCurrentX()) * 32, (c.getPos().getY() - vp.getCurrentY()) * 32, 32, 32);
         g.drawString("Health: " + game.getC().getCurrentHealth() + "/" + game.getC
                 ().getMaxHealth(), 500,500);
+        if(game.getIs()!=null){
+            drawInventory(g);
+        }
 
     }
     private void drawHealthBar(Graphics g,int x, int y,Character ch){
