@@ -83,8 +83,9 @@ public class Map {
             sizeX = r.nextInt(5)+3;
             sizeY = r.nextInt(5)+3;
             System.out.println(maxY + " "+minY);
-            posY = r.nextInt(maxY)+minY;
-            posX = r.nextInt(maxX)+minX;
+            posY = r.nextInt(maxY-(sizeY+minY+2))+minY+1;
+            posX = r.nextInt(maxX-(sizeX+minX+2))+minX+1;
+            System.out.println(toString());
         }
 
         public int getSizeX() {
@@ -102,6 +103,16 @@ public class Map {
         public int getPosX() {
             return posX;
         }
+
+        @Override
+        public String toString() {
+            return "Room{" +
+                    "sizeX=" + sizeX +
+                    ", sizeY=" + sizeY +
+                    ", posY=" + posY +
+                    ", posX=" + posX +
+                    '}';
+        }
     }
     public void generateRoomsMap(){
         tiles = new Tile[50][50];
@@ -113,7 +124,7 @@ public class Map {
         Room[][] r = new Room[3][3];
         for(int i = 0 ; i<3; i++) {
             for(int j = 0 ; j<3; j++) {
-                r[i][j] = new Room(i*(tiles.length/3),j*(tiles.length/3),(tiles.length/3),(tiles.length/3));
+                r[i][j] = new Room(i*(tiles.length/3),j*(tiles.length/3),(i+1)*(tiles.length/3),(j+1)*(tiles.length/3));
             }
         }
         FieldOfView fov = new FieldOfView();

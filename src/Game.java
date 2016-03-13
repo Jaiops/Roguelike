@@ -8,7 +8,7 @@ public class Game {
     private int currentMap;
     private InventoryScreen is;
     public Game(){
-        currentMap = 0;
+        currentMap = 1;
         m = new Map[2];
         m[0] = new Map();
         m[1] = new Map();

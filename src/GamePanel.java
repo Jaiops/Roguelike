@@ -30,10 +30,10 @@ public class GamePanel extends JPanel{
         repaint();
     }
 
-    private void drawItem(Graphics g, Item i){
+    /*private void drawItem(Graphics g, Item i){
         CopyOnWriteArrayList<Item> items = game.getM().getItems();
 
-    }
+    }*/
 
     private void drawTiles(Graphics g){
         Map m = game.getM();
@@ -56,9 +56,10 @@ public class GamePanel extends JPanel{
                         g.setColor(Color.white);
                         if(tiles[y][x].getItems().size()>0){
                             g.setColor(Color.orange);
-
-                            g.fillRect(x * 32, y * 32,32,32);
+                            System.out.println("Drawing item");
+                            g.fillRect(columns * 32, rows * 32,32,32);
                         }
+
                     }else{
                         g.setColor(Color.gray);
 
@@ -66,6 +67,7 @@ public class GamePanel extends JPanel{
                 }
 
                 g.fillRect(columns * 32, rows * 32, 32, 32);
+
                 g.setColor(Color.blue);
             }
         }
