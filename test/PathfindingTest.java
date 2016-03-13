@@ -1,8 +1,11 @@
+import game.Map;
+import game.Pathfinding;
+import game.Position;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Johan on 2016-02-25.
