@@ -23,6 +23,6 @@ public class Armor implements Item {
 
     @Override
     public void wear(Character c) {
-
+        c.setArmor(this);
     }
 }

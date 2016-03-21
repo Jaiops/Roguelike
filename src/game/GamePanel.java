@@ -15,6 +15,7 @@ public class GamePanel extends JPanel{
     private Game gameInstance;
     private FieldOfView fov;
     private Viewport vp;
+
     public GamePanel(){
         gameInstance =new Game();
 
@@ -70,7 +71,6 @@ public class GamePanel extends JPanel{
                 }
 
                 g.fillRect(columns * 32, rows * 32, 32, 32);
-
                 g.setColor(Color.blue);
             }
         }
@@ -81,13 +81,19 @@ public class GamePanel extends JPanel{
         g.fillRect(10, 10, 150, 150);
         int offset = 1;
         for(Item i : gameInstance.getC().getInventory()){
+            String itemString = i.getName();
+            if(i.equals(gameInstance.getC().getArmor())){
+                itemString+= "(wearing)";
+            }
             if(index == offset-1){
                 g.setColor(Color.yellow);
+                itemString += "       "+"[u]se, [w]ield or [d]rop";
             }
             else{
                 g.setColor(Color.white);
             }
-            g.drawString(i.getName(),20,20*offset);
+            g.drawString(itemString,20,20*offset);
+
             offset++;
         }
 

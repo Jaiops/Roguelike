@@ -86,10 +86,8 @@ public class Map {
 
             sizeX = r.nextInt(5)+3;
             sizeY = r.nextInt(5)+3;
-            System.out.println(maxY + " "+minY);
             posY = r.nextInt(maxY-(sizeY+minY+2))+minY+1;
             posX = r.nextInt(maxX-(sizeX+minX+2))+minX+1;
-            System.out.println(toString());
         }
 
         public int getSizeX() {

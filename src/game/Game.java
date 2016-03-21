@@ -14,7 +14,7 @@ public class Game {
     private int currentMap;
     private InventoryScreen is;
     public Game(){
-        currentMap = 1;
+        currentMap = 0;
         m = new Map[2];
         m[0] = new Map();
         m[1] = new Map();

@@ -1,5 +1,6 @@
 package game;
 
+import items.Armor;
 import items.Item;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Character {
     private String name;
     private boolean alive;
     private ArrayList<Item> inventory;
+    private Armor armor;
 
     public Character(Position pos,String name,int maxHealth) {
 
@@ -27,12 +29,39 @@ public class Character {
         this.currentHealth = maxHealth;
         this.alive = true;
         inventory = new ArrayList<>();
+        armor = null;
+    }
+
+    public void setArmor(Armor armor) {
+        if(this.armor != null && this.armor.equals(armor)){
+            this.armor = null;
+            System.out.println("Putting off "+armor.getName());
+        }else{
+            this.armor = armor;
+            System.out.println("Now wearing "+armor.getName());
+        }
+
+    }
+
+    public Armor getArmor() {
+        return armor;
     }
 
     public ArrayList<Item> getInventory() {
         return inventory;
     }
 
+    public boolean hasEquipped(Item i){
+        if(armor.equals(i)){
+            return true;
+        }
+        return false;
+    }
+    public void unEquip(Item i){
+        if(armor.equals(i)){
+            armor = null;
+        }
+    }
     public void setPos(Position pos) {
         this.pos = pos;
     }
