@@ -4,16 +4,28 @@ package game;
  * Created by Johan on 2016-02-20.
  */
 public class Staircase extends Tile {
-    Tile landingStairCase;
+    Position sprite;
     Position newPos;
-    public Staircase(Boolean blocking,Tile landingStairCase,Position newPos) {
-        super(blocking);
-        this.landingStairCase = landingStairCase;
+    Map m;
+    public Staircase(Map m,Position newPos,boolean isDownStair) {
+        super(false);
+        this.m = m;
         this.newPos = newPos;
+        if(isDownStair){
+            sprite = new Position(41,15);
+        }else{
+            sprite = new Position(42,15);
+
+        }
     }
+
+    public Position getSprite() {
+        return sprite;
+    }
+
     public void use(Character c){
         this.setOccupant(null);
-        landingStairCase.setOccupant(c);
+        m.getTiles()[newPos.getY()][newPos.getX()].setOccupant(c);
         c.setPos(newPos);
     }
 }

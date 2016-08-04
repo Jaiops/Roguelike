@@ -22,11 +22,14 @@ public class StandardEvilAi implements Ai{
         if(target!= null){
             ArrayList<Position> path = p.getPath(m, c.getPos(), target.getPos());
             if(path.size()>0){
-                c.move(path.get(path.size()-1).getX()-c.getPos().getX(),
-                       path.get(path.size()-1).getY()- c.getPos().getY(),m);
+                c.moveOrAttack(path.get(path.size() - 1).getX() - c.getPos().getX(),
+                        path.get(path.size() - 1).getY() - c.getPos().getY(), m);
             }else{
-                System.out.println("Ajdå");
+                System.err.println("Evil AI found no moveOrAttack");
             }
+        }
+        else{
+            c.increaseTurn(1.0);
         }
     }
     private Character findGoodTarget(Map m,ArrayList<Position> positions){

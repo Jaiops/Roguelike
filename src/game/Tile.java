@@ -46,9 +46,9 @@ public class Tile {
     }
 
     public Boolean isBlocking() {
-       /* if(!blocking && occupant!=null){
-            return true;
-        }*/
+//        if(blocking || occupant!=null){
+//            return true;
+//        }
         return blocking;
     }
 }

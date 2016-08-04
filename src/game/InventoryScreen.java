@@ -1,5 +1,6 @@
 package game;
 
+import items.EquipSlot;
 import items.Item;
 
 import java.awt.event.KeyEvent;
@@ -42,20 +43,22 @@ public class InventoryScreen {
             case KeyEvent.VK_D:
                 Item i = c.getInventory().get(index);
                 m.getTiles()[c.getPos().getY()][c.getPos().getX()].addItem(i);
-                if(c.hasEquipped(i)){
-                    c.unEquip(i);
-                }
+//                if(c.hasEquipped(i)){
+//                    c.unEquip(i);
+//                }
                 c.getInventory().remove(index);
                 g.setIs();
                 break;
             case KeyEvent.VK_U:
-                c.getInventory().get(index).use(c);
+                Item item =  c.getInventory().get(index);
+                item.equip(c);
+
                 g.setIs();
                 break;
-            case KeyEvent.VK_W:
-                c.getInventory().get(index).wear(c);
-                g.setIs();
-                break;
+//            case KeyEvent.VK_W:
+//                c.getInventory().get(index).wear(c);
+//                g.setIs();
+//                break;
             case KeyEvent.VK_ESCAPE:
                 g.setIs();
                 break;

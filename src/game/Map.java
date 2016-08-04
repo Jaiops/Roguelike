@@ -10,10 +10,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Johan on 2016-02-16.
  */
 public class Map {
+    public int index;
     private Tile[][] tiles;
     private CopyOnWriteArrayList<Monster> monsters;
     private CopyOnWriteArrayList<Item> items;
 
+
+    public Map(int index,Tile[][] tiles) {
+        this.index = index;
+        this.tiles = tiles;
+        monsters = new CopyOnWriteArrayList<>();
+        items = new CopyOnWriteArrayList<>();
+    }
 
     public Map(){
         monsters = new CopyOnWriteArrayList<>();
@@ -33,9 +41,11 @@ public class Map {
     }
     public void addMonster(Monster m){
         monsters.add(m);
+        tiles[m.getPos().getY()][m.getPos().getX()].setOccupant(m);
     }
-    public void addItem(Item i){
+    public void addItem(Item i, Position p){
         items.add(i);
+        tiles[p.getY()][p.getX()].addItem(i);
     }
     public void removeMonster(Monster m){
         monsters.remove(m);
@@ -62,124 +72,14 @@ public class Map {
         tiles[c.getPos().getY()][c.getPos().getX()].setOccupant(null);
         monsters.remove(c);
     }
-    public void generateMap(int map[][]){
-        tiles = new Tile[map.length][map[0].length];
-        for(int i = 0 ; i<map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j] == 0){
-                    tiles[i][j] = new Tile(false);
-                }else{
-                    tiles[i][j] = new Tile(true);
-                }
-            }
-        }
-    }
-
-    private class Room{
-
-        int sizeX;
-        int sizeY;
-        int posY;
-        int posX;
-        protected Room(int minX, int minY, int maxX, int maxY){
-            Random r = new Random();
-
-            sizeX = r.nextInt(5)+3;
-            sizeY = r.nextInt(5)+3;
-            posY = r.nextInt(maxY-(sizeY+minY+2))+minY+1;
-            posX = r.nextInt(maxX-(sizeX+minX+2))+minX+1;
-        }
-
-        public int getSizeX() {
-            return sizeX;
-        }
-
-        public int getSizeY() {
-            return sizeY;
-        }
-
-        public int getPosY() {
-            return posY;
-        }
-
-        public int getPosX() {
-            return posX;
-        }
-
-        @Override
-        public String toString() {
-            return "Room{" +
-                    "sizeX=" + sizeX +
-                    ", sizeY=" + sizeY +
-                    ", posY=" + posY +
-                    ", posX=" + posX +
-                    '}';
-        }
-    }
-    public void generateRoomsMap(){
-        tiles = new Tile[50][50];
-        for(int i = 0 ; i<tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = new Tile(true);
-            }
-        }
-        Room[][] r = new Room[3][3];
-        for(int i = 0 ; i<3; i++) {
-            for(int j = 0 ; j<3; j++) {
-                r[i][j] = new Room(i*(tiles.length/3),j*(tiles.length/3),(i+1)*(tiles.length/3),(j+1)*(tiles.length/3));
-            }
-        }
-        FieldOfView fov = new FieldOfView();
-        for(int i = 0 ; i<3; i++) {
-            for(int j = 0 ; j<3; j++) {
-                for(int y = r[i][j].getPosY() ; y<r[i][j].getSizeY()+r[i][j].getPosY(); y++) {
-                    for(int x = r[i][j].getPosX() ; x<r[i][j].getSizeY()+r[i][j].getPosX(); x++) {
-                        tiles[y][x] = new Tile(false);
-                    }
-                }
-                if(i>0){
-                    Position p1 = new Position(r[i][j].getPosX(),r[i][j].getPosY());
-                    Position p2 = new Position(r[i-1][j].getPosX(),r[i-1][j].getPosY());
-                    ArrayList<Position> line=fov.calculateLine(p1, p2);
-                    for(Position p : line ){
-                        tiles[p.getY()][p.getX()] = new Tile(false);
-                    }
-                }
-                if(j>0){
-                    Position p1 = new Position(r[i][j].getPosX(),r[i][j].getPosY());
-                    Position p2 = new Position(r[i][j-1].getPosX(),r[i][j-1].getPosY());
-                    ArrayList<Position> line=fov.calculateLine(p1, p2);
-                    for(Position p : line ){
-                        tiles[p.getY()][p.getX()] = new Tile(false);
-                    }
-                }
-            }
-        }
-        printMap();
-
-    }
-    private void printMap(){
-        for(int i = 0 ; i<tiles.length; i++) {
-            for (int j = 0; j < tiles[i].length; j++) {
-                if(tiles[i][j].isBlocking()){
-                    System.out.print("#");
-                }else{
-                    System.out.print(".");                }
-            }
-            System.out.println();
-        }
-    }
     public Position getFreePosition(){
         Random r = new Random();
         while(true){
             Position p = new Position(r.nextInt(tiles.length),
                     r.nextInt(tiles.length));
-            if(!tiles[p.getY()][p.getX()].isBlocking()){
+            if(!tiles[p.getY()][p.getX()].isBlocking() &&!tiles[p.getY()][p.getX()].hasOccupant() ){
                 return p;
             }
         }
-    }
-    private int[][] generateRoom(){
-        return null;
     }
 }

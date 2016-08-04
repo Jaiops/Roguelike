@@ -1,4 +1,5 @@
 import game.Map;
+import game.MapGenerator;
 import game.Pathfinding;
 import game.Position;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class PathfindingTest {
                         {1,1,1,1}
 
         };
-        m.generateMap(map);
+        m = new Map(0,MapGenerator.generateMap(map));
         Pathfinding p = new Pathfinding();
 
         assertEquals(null,p.getPath(m,new Position(1,1),new Position(4,2)));
@@ -42,7 +43,7 @@ public class PathfindingTest {
                         {1,1,1,1,1,1}
 
         };
-        m.generateMap(map);
+        m = new Map(0,MapGenerator.generateMap(map));
         Pathfinding p = new Pathfinding();
         ArrayList<Position> list = p.getPath(m,new Position(4,1),new Position(4,7));
         assertEquals(12,list.size());
