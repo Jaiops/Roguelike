@@ -178,6 +178,9 @@ public class Character {
                 map.kill(occupant);
             }
         }
+        else{
+            increaseTurn(1);
+        }
 
 
     }
