@@ -1,6 +1,7 @@
 package game;
 
 import items.Item;
+import items.ItemFactory;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,15 @@ import java.util.ArrayList;
  */
 
 public class Character {
+    //eric
+    private int experience;
+    private int experiencePerlevel = 100;
+    private int level = 1;
+    private int expyeild = 36;
+    private int regenrate = 20;
+    private int regenamount = 1;
+
+
 
     //STATS
     private int damage;
@@ -42,6 +52,11 @@ public class Character {
         inventory = new ArrayList<>();
         buffs = new ArrayList<>();
         turn = 0;
+        //eric
+        inventory.add(ItemFactory.healthPotion());
+
+
+
     }
 
     public Item getArmor() {
@@ -68,12 +83,56 @@ public class Character {
         this.speed = speed;
     }
 
+    //eric
+
+    public int getLevel(){
+        return this.level;
+    }
+
+    public int getExperience(){
+        return experience;
+    }
+
+    public int getExperienceNeeded(){
+        return experiencePerlevel* level;
+    }
+    public void setLevel(int level){
+        this.level = level;
+    }
+
+    public int getExpYield(){
+        return level*expyeild;
+    }
+
+    public void setExpYield(int xp){
+        System.out.println("Gained "+ xp + " XP");
+        this.experience += xp;
+        if(this.experience > experiencePerlevel*level -1){
+            experience = experience - experiencePerlevel*level;
+            this.level++;
+            maxHealth += 150;
+            modifyHealth(maxHealth);
+            modifyDamage(5);
+            modifyDefense(2);
+
+            System.out.println("Leveled up to level "+ level + "and gained: 150 hp, 5 dmg and 2 def ,"+
+            "for next level: " + experiencePerlevel*level);
+            //notify level up
+        }
+
+    }
+
 
     public double getTurn() {
         return turn;
     }
     public void increaseTurn(double inc){
         turn += inc;
+        if(alignment == Alignment.GOOD) {
+            if (turn % regenrate == 0) {
+                modifyHealth(regenamount);
+            }
+        }
     }
 
     public ArrayList<Item> getInventory() {
@@ -141,6 +200,7 @@ public class Character {
         int newY = pos.getY()+y;
         Character occupant;
         if(tiles[newY][newX].hasOccupant()){
+
             attack(map, tiles, newX, newY);
         }
         else if(!tiles[newY][newX].isBlocking()){
@@ -175,6 +235,9 @@ public class Character {
                 increaseTurn(1.0 * speed);
             }
             if (occupant.getCurrentHealth() <= 0) {
+                if(this.alignment == Alignment.GOOD){
+                    setExpYield(occupant.getExpYield());
+                }
                 map.kill(occupant);
             }
         }
@@ -192,10 +255,23 @@ public class Character {
         this.defense +=  defense;
     }
     public void modifyHealth(int health){
-        this.currentHealth += health;
+        if(this.currentHealth + health > maxHealth){
+            this.currentHealth = maxHealth;
+        } else {
+            this.currentHealth += health;
+        }
     }
     public void modifySpeed(double speed){
         this.speed += speed;
+    }
+
+    //eric
+    public void modifyRegenAmount(int amount){
+        this.regenamount+= amount;
+    }
+
+    public void modifyRegenRate(int rate){
+        this.regenrate-=rate;
     }
 
 

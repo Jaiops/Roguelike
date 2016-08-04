@@ -24,6 +24,17 @@ public class ItemBuilder {
         item.buff = null;
     }
 
+    //eric
+    public ItemBuilder setRegenRate(int rate){
+        item.regenrate = rate;
+        return this;
+    }
+
+    public ItemBuilder setRegenAmount(int amount){
+        item.regenamount = amount;
+        return this;
+    }
+
     public ItemBuilder setEquipSprite(Position position){
         item.equipSprite = position;
         return this;
@@ -43,6 +54,7 @@ public class ItemBuilder {
         item.health = health;
         return this;
     }
+
 
     public ItemBuilder setDefense(int defense) {
         item.defense = defense;

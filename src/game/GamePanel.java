@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,6 +44,8 @@ public class GamePanel extends JPanel {
             System.exit(-1);
         }
     }
+
+
 
     public synchronized void keyPressed(KeyEvent e) {
         gameInstance.getAction(e);
@@ -255,7 +256,9 @@ public class GamePanel extends JPanel {
                 ().getMaxHealth(), 500, 500);
         String turn = String.format("%.1f", c.getTurn());
         g.drawString("Turn: "+turn, 500, 530);
-        g.drawString("Level: "+gameInstance.currentMap,500,560);
+        g.drawString("GameLevel: "+gameInstance.currentMap,500,560);
+        g.drawString("Player level: " + gameInstance.getC().getLevel() , 650, 500);
+        g.drawString("Experience: " + gameInstance.getC().getExperience()+"/"+gameInstance.getC().getExperienceNeeded() , 650, 530);
         if (gameInstance.getIs() != null) {
             drawInventory(g);
         }

@@ -157,13 +157,13 @@ public class MapGenerator {
                 int x = r.nextInt(3);
                 switch (x){
                     case 0:
-                        m[i].addMonster(MonsterFactory.createGoblin(m[i].getFreePosition()));
+                        m[i].addMonster(MonsterFactory.createGoblin(m[i].getFreePosition(), i+1));
                         break;
                     case 1:
-                        m[i].addMonster(MonsterFactory.createSpeed(m[i].getFreePosition()));
+                        m[i].addMonster(MonsterFactory.createSpeed(m[i].getFreePosition(),i+1));
                         break;
                     case 2:
-                        m[i].addMonster(MonsterFactory.createOrc(m[i].getFreePosition()));
+                        m[i].addMonster(MonsterFactory.createOrc(m[i].getFreePosition(), i+1));
                         break;
                 }
             }

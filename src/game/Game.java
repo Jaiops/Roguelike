@@ -2,13 +2,18 @@ package game;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game {
     private boolean isPlaying;
     private Character c;
     private Map[] m;
+
+    //eric
+    private HashMap entities;
+
     private float turn;
-    public int currentMap;
+    public static int currentMap;
     private InventoryScreen is;
     public Game(){
 
@@ -26,6 +31,15 @@ public class Game {
         isPlaying = true;
         is = null;
         turn = 0;
+
+        //eric
+        entities = new HashMap<Position, Character>();
+        entities.put(c.getPos(), c);
+        for(Monster mon : m[currentMap].getMonsters()){
+
+            entities.put(mon.getPos(), mon);
+        }
+
     }
 
     public Character getC() {
@@ -34,6 +48,10 @@ public class Game {
 
     public void setIs() {
         this.is = null;
+    }
+
+    public static int getCurrentMapLevel(){
+        return currentMap;
     }
 
     public InventoryScreen getIs() {
@@ -91,6 +109,7 @@ public class Game {
                         currentMap = stair.m.index;
                         stair.use(c);
                         for(Monster mon : m[currentMap].getMonsters()){
+
                             mon.setTurn(c.getTurn());
                         }
                     }

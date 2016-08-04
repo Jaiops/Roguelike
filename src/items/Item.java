@@ -1,8 +1,7 @@
 package items;
-import game.*;
+import game.Buff;
 import game.Character;
-
-import java.util.Random;
+import game.Position;
 
 /**
  * Created by Johan on 2016-02-16.
@@ -17,6 +16,10 @@ public class Item {
     public int damage;
     public int health;
     public int defense;
+    //eric
+    public int regenamount;
+    public int regenrate; //denna tar minus c.regenrate vilket gör att den är oftare
+
     public double globalSpeed;
     public double itemSpeed;
     public Buff buff;

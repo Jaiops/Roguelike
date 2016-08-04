@@ -5,32 +5,35 @@ package game;
  */
 public class MonsterFactory {
 
-    static Monster createGoblin(Position p){
+
+    static Monster createGoblin(Position p, int level){
 
         Monster m = new Monster(p,new StandardEvilAi(),"Goblin",20);
         m.setAlignment(Alignment.EVIL);
-        m.setDamage(3);
+        m.setDamage(7*level);
         m.setSprite(3,2);
         m.setSpeed(1.0);
-
+        m.setLevel(level);
         return m;
     }
-    static Monster createOrc(Position p){
+    static Monster createOrc(Position p, int level){
 
         Monster m = new Monster(p,new StandardEvilAi(),"Orc",30);
         m.setAlignment(Alignment.EVIL);
-        m.setDamage(5);
+        m.setDamage(9*level);
         m.setSprite(47,2);
         m.setSpeed(2.0);
+        m.setLevel(level);
         return m;
     }
-    static Monster createSpeed(Position p){
+    static Monster createSpeed(Position p, int level){
 
         Monster m = new Monster(p,new StandardEvilAi(),"Speed Spider",30);
         m.setAlignment(Alignment.EVIL);
-        m.setDamage(5);
+        m.setDamage(11*level);
         m.setSprite(53,4);
         m.setSpeed(0.5);
+        m.setLevel(level);
         return m;
     }
     static Monster createDevil(Position p){
