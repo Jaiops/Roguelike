@@ -15,16 +15,17 @@ public class Game {
     private float turn;
     public static int currentMap;
     private InventoryScreen is;
-    public Game(){
+
+    public Game() {
 
 
         currentMap = 0;
         m = MapGenerator.generateMultipleMap(4);
 
-        c = new Character(m[currentMap].getFreePosition(),"Player",1000);
+        c = new Character(m[currentMap].getFreePosition(), "Player", 1000);
         m[0].getTiles()[c.getPos().getY()][c.getPos().getX()].setOccupant(c);
 
-        c.setSprite(1,31);
+        c.setSprite(1, 31);
         c.setSpeed(1.0);
         c.setAlignment(Alignment.GOOD);
         c.setDamage(10);
@@ -35,7 +36,7 @@ public class Game {
         //eric
         entities = new HashMap<Position, Character>();
         entities.put(c.getPos(), c);
-        for(Monster mon : m[currentMap].getMonsters()){
+        for (Monster mon : m[currentMap].getMonsters()) {
 
             entities.put(mon.getPos(), mon);
         }
@@ -50,7 +51,7 @@ public class Game {
         this.is = null;
     }
 
-    public static int getCurrentMapLevel(){
+    public static int getCurrentMapLevel() {
         return currentMap;
     }
 
@@ -66,16 +67,15 @@ public class Game {
         return turn;
     }
 
-    public void getAction(KeyEvent e){
+    public void getAction(KeyEvent e) {
 
 
-        if(is != null){
+        if (is != null) {
             is.getAction(e);
-        }
-        else{
+        } else {
             double lastTurn = c.getTurn();
 
-            switch (e.getKeyCode()){
+            switch (e.getKeyCode()) {
                 case KeyEvent.VK_NUMPAD4:
                     c.moveOrAttack(-1, 0, m[currentMap]);
                     break;
@@ -103,57 +103,47 @@ public class Game {
                 case KeyEvent.VK_Z:
                     Position p = c.getPos();
                     Tile t = m[currentMap].getTiles()[p.getY()][p.getX()];
-                    if(t.getClass() == Staircase.class){
+                    if (t.getClass() == Staircase.class) {
 
-                        Staircase stair = (Staircase)t;
+                        Staircase stair = (Staircase) t;
                         currentMap = stair.m.index;
                         stair.use(c);
-                        for(Monster mon : m[currentMap].getMonsters()){
+                        for (Monster mon : m[currentMap].getMonsters()) {
 
                             mon.setTurn(c.getTurn());
                         }
                     }
                     break;
-                case KeyEvent.VK_A:
-//                    Item i = new Potion();
-//                    m[currentMap].getTiles()[3][3].addItem(i);
-                    break;
                 case KeyEvent.VK_G:
-                    c.getInventory().add(m[currentMap].getTiles()[c.getPos().getY()][c.getPos().getX()].getItems().get(0));
-                    m[currentMap].getTiles()[c.getPos().getY()][c.getPos().getX()].getItems().remove(0);
+                    try {
+                        c.getInventory().add(m[currentMap].getTiles()[c.getPos().getY()][c.getPos().getX()].getItems().get(0));
+                        m[currentMap].getTiles()[c.getPos().getY()][c.getPos().getX()].getItems().remove(0);
+
+                    } catch (IndexOutOfBoundsException e1) {
+                        MessageLogger.getInstance().logMessage("Nothing to pickup");
+                    }
+
                     break;
                 case KeyEvent.VK_I:
-                    is = new InventoryScreen(c,m[currentMap],this);
+                    is = new InventoryScreen(c, m[currentMap], this);
                     break;
-//                case KeyEvent.VK_D:
-//                    Monster mon = new Monster(new Position(4,5),new StandardEvilAi(),"Goblin",10);
-//                    mon.setAlignment(Alignment.EVIL);
-//                    mon.setDamage(5);
-//                    m[currentMap].addMonster(mon);
-//                    m[currentMap].getTiles()[5][4].setOccupant(mon);
-//                    break;
-//                case KeyEvent.VK_S:
-//                    Monster rat = new Monster(new Position(7,5),new StandardGoodAi(),"rat",10);
-//                    rat.setAlignment(Alignment.GOOD);
-//                    rat.setDamage(5);
-//                    m[currentMap].addMonster(rat);
-//                    m[currentMap].getTiles()[5][7].setOccupant(rat);
-//                    break;
+                default:
+                    break;
 
 
             }
             double currentTurn = c.getTurn();
             ArrayList<Buff> outlastedBuffs = new ArrayList<>();
 
-            for(Buff b : c.getBuffs()){
-                if(b.getTurns()>0){
+            for (Buff b : c.getBuffs()) {
+                if (b.getTurns() > 0) {
                     b.decrementTurn(currentTurn - lastTurn);
-                    while(b.getTurns() <= b.getNextTick()){
+                    while (b.getTurns() <= b.getNextTick()) {
 
                         b.update(c);
                         b.setNextTick();
                     }
-                }else{
+                } else {
                     outlastedBuffs.add(b);
                 }
 
@@ -161,26 +151,26 @@ public class Game {
             c.removeBuff(outlastedBuffs);
 
         }
-        for(Monster mon: m[currentMap].getMonsters()){
-            if(mon.isAlive()){
+        for (Monster mon : m[currentMap].getMonsters()) {
+            if (mon.isAlive()) {
                 double lastTurn = mon.getTurn();
                 ArrayList<Buff> outlastedBuffs = new ArrayList<>();
 
-                while (mon.getTurn()< c.getTurn() && c.isAlive()){
+                while (mon.getTurn() < c.getTurn() && c.isAlive()) {
 
                     mon.takeTurn(m[currentMap]);
                 }
                 double currentTurn = mon.getTurn();
 
-                for(Buff b : mon.getBuffs()){
-                    if(b.getTurns()>0){
+                for (Buff b : mon.getBuffs()) {
+                    if (b.getTurns() > 0) {
                         b.decrementTurn(currentTurn - lastTurn);
-                        while(b.getTurns() <= b.getNextTick()){
+                        while (b.getTurns() <= b.getNextTick()) {
 
                             b.update(mon);
                             b.setNextTick();
                         }
-                    }else{
+                    } else {
                         outlastedBuffs.add(b);
                     }
                 }

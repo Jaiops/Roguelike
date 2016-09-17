@@ -19,7 +19,6 @@ public class Character {
     private int regenamount = 1;
 
 
-
     //STATS
     private int damage;
     private int defense;
@@ -42,7 +41,7 @@ public class Character {
     private Item mainHand = null;
 
 
-    public Character(Position pos,String name,int maxHealth) {
+    public Character(Position pos, String name, int maxHealth) {
 
         this.pos = pos;
         this.name = name;
@@ -56,7 +55,10 @@ public class Character {
         inventory.add(ItemFactory.healthPotion());
 
 
+    }
 
+    public int getDefense() {
+        return defense;
     }
 
     public Item getArmor() {
@@ -85,50 +87,52 @@ public class Character {
 
     //eric
 
-    public int getLevel(){
+    public int getLevel() {
         return this.level;
     }
 
-    public int getExperience(){
+    public int getExperience() {
         return experience;
     }
 
-    public int getExperienceNeeded(){
-        return experiencePerlevel* level;
+    public int getExperienceNeeded() {
+        return experiencePerlevel * level;
     }
-    public void setLevel(int level){
+
+    public void setLevel(int level) {
         this.level = level;
     }
 
-    public int getExpYield(){
-        return level*expyeild;
+    public int getExpYield() {
+        return level * expyeild;
     }
 
-    public void setExpYield(int xp){
-        System.out.println("Gained "+ xp + " XP");
+    public void setExpYield(int xp) {
+        System.out.println("Gained " + xp + " XP");
         this.experience += xp;
-        if(this.experience > experiencePerlevel*level -1){
-            experience = experience - experiencePerlevel*level;
+        if (this.experience > experiencePerlevel * level - 1) {
+            experience = experience - experiencePerlevel * level;
             this.level++;
             maxHealth += 150;
             modifyHealth(maxHealth);
             modifyDamage(5);
             modifyDefense(2);
 
-            System.out.println("Leveled up to level "+ level + "and gained: 150 hp, 5 dmg and 2 def ,"+
-            "for next level: " + experiencePerlevel*level);
+            MessageLogger.getInstance().logMessage("Leveled up to level " + level +
+                    "and gained: 150 hp, 5 dmg and 2 def ," +
+                    "for next level: " + experiencePerlevel * level);
             //notify level up
         }
 
     }
 
-
     public double getTurn() {
         return turn;
     }
-    public void increaseTurn(double inc){
+
+    public void increaseTurn(double inc) {
         turn += inc;
-        if(alignment == Alignment.GOOD) {
+        if (alignment == Alignment.GOOD) {
             if (turn % regenrate == 0) {
                 modifyHealth(regenamount);
             }
@@ -152,9 +156,10 @@ public class Character {
         return alive;
     }
 
-    public void setAlignment(Alignment al){
+    public void setAlignment(Alignment al) {
         this.alignment = al;
     }
+
     public int getCurrentHealth() {
         return currentHealth;
     }
@@ -163,16 +168,18 @@ public class Character {
         return maxHealth;
     }
 
-    public void takeDamage(int damage){
-        modifyHealth(-(damage-defense));
+    public void takeDamage(int damage) {
+        modifyHealth(-(damage - defense));
 
-        if(currentHealth<0){
+        if (currentHealth < 0) {
             alive = false;
         }
     }
+
+    //Depricated
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
-        if(currentHealth>maxHealth){
+        if (currentHealth > maxHealth) {
             this.currentHealth = maxHealth;
         }
     }
@@ -193,30 +200,28 @@ public class Character {
         return alignment;
     }
 
-    public void moveOrAttack(int x, int y, Map map){
+    public void moveOrAttack(int x, int y, Map map) {
 
         Tile[][] tiles = map.getTiles();
-        int newX = pos.getX() +x;
-        int newY = pos.getY()+y;
-        Character occupant;
-        if(tiles[newY][newX].hasOccupant()){
+        int newX = pos.getX() + x;
+        int newY = pos.getY() + y;
+        if (tiles[newY][newX].hasOccupant()) {
 
             attack(map, tiles, newX, newY);
-        }
-        else if(!tiles[newY][newX].isBlocking()){
+        } else if (!tiles[newY][newX].isBlocking()) {
             move(tiles, newX, newY);
         }
     }
 
     private void move(Tile[][] tiles, int newX, int newY) {
         tiles[pos.getY()][pos.getX()].setOccupant(null);
-        this.pos = new Position(newX,newY);
+        this.pos = new Position(newX, newY);
         tiles[newY][newX].setOccupant(this);
-        increaseTurn(1.0*speed);
-        if(tiles[newY][newX].getItems().size() >0){
-            for(Item i : tiles[newY][newX].getItems()){
+        increaseTurn(1.0 * speed);
+        if (tiles[newY][newX].getItems().size() > 0) {
+            for (Item i : tiles[newY][newX].getItems()) {
 
-                MessageLogger.getInstance().logMessage("You See "+i.name);
+                MessageLogger.getInstance().logMessage("You See " + i.name);
             }
         }
     }
@@ -224,56 +229,57 @@ public class Character {
     private void attack(Map map, Tile[][] tiles, int newX, int newY) {
         Character occupant;
         occupant = tiles[newY][newX].getOccupant();
-        if(occupant.getAlignment()!= this.getAlignment()){
+        if (occupant.getAlignment() != this.getAlignment()) {
             MessageLogger.getInstance().logMessage(this.getName() + " Attacks " + occupant.getName() +
                     " for " + this.damage + " damage");
             occupant.takeDamage(this.getDamage());
-            if(mainHand != null){
-                increaseTurn(mainHand.itemSpeed*speed);
-            }
-            else{
+            if (mainHand != null) {
+                increaseTurn(mainHand.itemSpeed * speed);
+            } else {
                 increaseTurn(1.0 * speed);
             }
             if (occupant.getCurrentHealth() <= 0) {
-                if(this.alignment == Alignment.GOOD){
+                if (this.alignment == Alignment.GOOD) {
                     setExpYield(occupant.getExpYield());
                 }
                 map.kill(occupant);
             }
-        }
-        else{
+        } else {
             increaseTurn(1);
         }
 
 
     }
 
-    public void modifyDamage(int damage){
-        this.damage +=  damage;
+    public void modifyDamage(int damage) {
+        this.damage += damage;
     }
-    public void modifyDefense(int defense){
-        this.defense +=  defense;
+
+    public void modifyDefense(int defense) {
+        this.defense += defense;
     }
-    public void modifyHealth(int health){
-        if(this.currentHealth + health > maxHealth){
+
+    public void modifyHealth(int health) {
+        if (this.currentHealth + health > maxHealth) {
             this.currentHealth = maxHealth;
         } else {
             this.currentHealth += health;
         }
     }
-    public void modifySpeed(double speed){
+
+    public void modifySpeed(double speed) {
         this.speed += speed;
     }
 
     //eric
-    public void modifyRegenAmount(int amount){
-        this.regenamount+= amount;
+    public void modifyRegenAmount(int amount) {
+        this.regenamount += amount;
     }
 
-    public void modifyRegenRate(int rate){
-        this.regenrate-=rate;
+    //eric
+    public void modifyRegenRate(int rate) {
+        this.regenrate -= rate;
     }
-
 
 
     public Position getSprite() {
@@ -285,15 +291,16 @@ public class Character {
     }
 
     public void setSprite(int x, int y) {
-        spritePosition = new Position(x,y);
+        spritePosition = new Position(x, y);
     }
 
     public void addBuff(Buff buff) {
         buff.startEffect(this);
         buffs.add(buff);
     }
+
     public void removeBuff(ArrayList<Buff> buff) {
-        for(Buff b : buff){
+        for (Buff b : buff) {
             b.endEffect(this);
         }
         buffs.removeAll(buff);
@@ -305,5 +312,53 @@ public class Character {
 
     public void setTurn(double turn) {
         this.turn = turn;
+    }
+
+    public void equip(Item i) {
+        switch (i.slot) {
+            case ARMOR:
+                if (getArmor() != null || getArmor() == i) {
+                    unequip(getArmor());
+                }
+                setArmor(i);
+                MessageLogger.getInstance().logMessage(
+                        "Equipped " + i.name
+                );
+                break;
+            case MAIN_HAND:
+                if (getMainHand() != null || getMainHand() == i) {
+                    unequip(getMainHand());
+                }
+                setMainHand(i);
+                MessageLogger.getInstance().logMessage(
+                        "Wielded " + i.name
+                );
+
+                break;
+            case NULL:
+                MessageLogger.getInstance().logMessage(
+                        "Used " + i.name
+                );
+                removeInventoryItem(i);
+                break;
+
+        }
+        modifyDamage(i.damage);
+        modifyDefense(i.defense);
+        modifyHealth(i.health);
+        modifySpeed(i.globalSpeed);
+        if (i.buff != null) {
+
+            addBuff(i.buff);
+        }
+
+    }
+
+    public void unequip(Item i) {
+
+        modifyDamage(-i.damage);
+        modifyDefense(-i.defense);
+        modifyHealth(-i.health);
+        modifySpeed(-i.globalSpeed);
     }
 }
