@@ -8,23 +8,59 @@ import java.util.Random;
 /**
  * Created by Johan on 2016-05-29.
  */
+enum  TileSet {
+    DUNGEON_FLOOR(14,0,8),
+    DUNGEON_WALL(16,16,7),
+    CASTLE_FLOOR(12,41,12),
+    CASTLE_WALL(17,52,12);
+    int yOffset;
+    int xOffset;
+    int size;
+
+    TileSet(int yOffset, int xOffset, int size) {
+        this.yOffset = yOffset;
+        this.xOffset = xOffset;
+        this.size = size;
+    }
+}
+
+enum MapTheme {
+    DUNGEON(TileSet.DUNGEON_FLOOR,TileSet.DUNGEON_WALL),
+    CASTLE(TileSet.CASTLE_FLOOR,TileSet.CASTLE_WALL);
+    TileSet floor;
+    TileSet wall;
+
+    MapTheme(TileSet floor, TileSet wall) {
+        this.floor = floor;
+        this.wall = wall;
+    }
+    static public MapTheme random(){
+        Random r = new Random();
+
+        int v = r.nextInt(MapTheme.values().length);
+        return MapTheme.values()[v];
+    }
+}
 public class MapGenerator {
 
     Tile tiles[][];
-    public static Tile[][] generateMap(int map[][]){
-        Tile[][] tiles = new Tile[map.length][map[0].length];
-        for(int i = 0 ; i<map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j] == 0){
-                    tiles[i][j] = new Tile(false);
-                }else{
-                    tiles[i][j] = new Tile(true);
-                }
-            }
-        }
-        return tiles;
-    }
 
+    //Should be updated.
+
+    /* public static Tile[][] generateMap(int map[][]){
+         Tile[][] tiles = new Tile[map.length][map[0].length];
+         for(int i = 0 ; i<map.length; i++) {
+             for (int j = 0; j < map[i].length; j++) {
+                 if(map[i][j] == 0){
+                     tiles[i][j] = new Tile(false);
+                 }else{
+                     tiles[i][j] = new Tile(true);
+                 }
+             }
+         }
+         return tiles;
+     }
+ */
     private static class Room{
 
         int sizeX;
@@ -66,11 +102,16 @@ public class MapGenerator {
                     '}';
         }
     }
-    public static Tile[][] generateRoomsMap(){
+    static Position randomSpritePosition(TileSet t){
+        Random r = new Random();
+        return new Position(r.nextInt(t.size)+t.xOffset,t.yOffset);
+    }
+    public static Tile[][] generateRoomsMap(MapTheme t){
         Tile tiles[][] = new Tile[50][50];
+
         for(int i = 0 ; i<tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
-                tiles[i][j] = new Tile(true);
+                tiles[i][j] = new Tile(true,randomSpritePosition(t.wall));
             }
         }
         Room[][] r = new Room[3][3];
@@ -84,7 +125,7 @@ public class MapGenerator {
             for(int j = 0 ; j<3; j++) {
                 for(int y = r[i][j].getPosY() ; y<r[i][j].getSizeY()+r[i][j].getPosY(); y++) {
                     for(int x = r[i][j].getPosX() ; x<r[i][j].getSizeY()+r[i][j].getPosX(); x++) {
-                        tiles[y][x] = new Tile(false);
+                        tiles[y][x] = new Tile(false,randomSpritePosition(t.floor));
                     }
                 }
                 if(i>0){
@@ -92,7 +133,7 @@ public class MapGenerator {
                     Position p2 = new Position(r[i-1][j].getPosX(),r[i-1][j].getPosY());
                     ArrayList<Position> line=fov.calculateLine(p1, p2);
                     for(Position p : line ){
-                        tiles[p.getY()][p.getX()] = new Tile(false);
+                        tiles[p.getY()][p.getX()] = new Tile(false,randomSpritePosition(t.floor));
                     }
                 }
                 if(j>0){
@@ -100,7 +141,7 @@ public class MapGenerator {
                     Position p2 = new Position(r[i][j-1].getPosX(),r[i][j-1].getPosY());
                     ArrayList<Position> line=fov.calculateLine(p1, p2);
                     for(Position p : line ){
-                        tiles[p.getY()][p.getX()] = new Tile(false);
+                        tiles[p.getY()][p.getX()] = new Tile(false,randomSpritePosition(t.floor));
                     }
                 }
             }
@@ -125,23 +166,20 @@ public class MapGenerator {
         Map[] m = new Map[layers+1];
         //GENERATE MAPS
         for(int i = 0; i<layers+1;i++){
-            m[i] = new Map(i,generateRoomsMap());
+            m[i] = new Map(i,generateRoomsMap(MapTheme.random()));
 
         }
 
         //BUILD STAIRCASES
         for(int i = 0; i<layers;i++){
-            //m[i] = new Map(generateRoomsMap());
             if(i < layers){
                 for(int j = 0; j < 3;j++){
 
                     Position pos = m[i].getFreePosition();
                     Position pos2 = m[i+1].getFreePosition();
 
-                    m[i].getTiles()[pos.getY()][pos.getX()] = new Staircase(m[i+1],pos2,true);
-
-                    //Position pos = m[i-1].getFreePosition();
-                    m[i+1].getTiles()[pos2.getY()][pos2.getX()] = new Staircase(m[i],pos,false);
+                    m[i].getTiles()[pos.getY()][pos.getX()] = new Staircase(m[i+1],pos2,new Position(41,15));
+                    m[i+1].getTiles()[pos2.getY()][pos2.getX()] = new Staircase(m[i],pos,new Position(42,15));
 
                 }
 

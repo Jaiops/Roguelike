@@ -12,12 +12,18 @@ public class Tile {
     private CopyOnWriteArrayList<Item> items;
     private Character occupant;
     private Boolean blocking;
+    private Position spritePosition;
 
-    public Tile(Boolean blocking) {
+    public Tile(Boolean blocking, Position spritePosition) {
+        this.spritePosition = spritePosition;
         items = new CopyOnWriteArrayList<>();
         this.blocking = blocking;
         this.seen = false;
         occupant = null;
+    }
+
+    public Position getSpritePosition() {
+        return spritePosition;
     }
 
     public void setSeen(){

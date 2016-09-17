@@ -45,7 +45,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-
     public synchronized void keyPressed(KeyEvent e) {
         gameInstance.getAction(e);
         repaint();
@@ -58,13 +57,9 @@ public class GamePanel extends JPanel {
 
     }
 
+    //TODO Cleanup possible?
     private void drawTiles(Graphics g) {
-        int floorY = 14;
-        int floorX = 1;
-        int wallX = 17;
-        int wallY = 16;
-        int stairX = 41;
-        int stairY = 15;
+
         Map m = gameInstance.getM();
         Tile[][] tiles = m.getTiles();
         ArrayList<Position> fovPos = fov.calculateFov(m, gameInstance.getC().getPos());
@@ -78,7 +73,7 @@ public class GamePanel extends JPanel {
                 Position p = new Position(x, y);
 
                 if (tiles[y][x].isBlocking()) {
-                    drawSprite(g, new Position(x, y), new Position(wallX, wallY));
+                    drawSprite(g, new Position(x, y), tiles[y][x].getSpritePosition());
 
                     if (!fovPos.contains(p)) {
                         int alpha = 150; // 50% transparent
@@ -91,32 +86,28 @@ public class GamePanel extends JPanel {
 
                         if (tiles[y][x].getClass() == Staircase.class) {
                             Staircase staircase = (Staircase) tiles[y][x];
-                            drawSprite(g, new Position(x, y), staircase.getSprite());
+                            drawSprite(g, new Position(x, y), staircase.getSpritePosition());
                         } else {
 
-                            drawSprite(g, new Position(x, y), new Position(floorX, floorY));
+                            drawSprite(g, new Position(x, y), tiles[y][x].getSpritePosition());
                         }
 
                         if (tiles[y][x].getItems().size() > 0) {
                             g.setColor(Color.orange);
-                            // g.fillRect(columns * TILESIZE, rows * TILESIZE, TILESIZE, TILESIZE);
                             drawSprite(g, new Position(x, y), tiles[y][x].getItems().get(0).mapSprite);
                         }
 
                     } else {
 
-                        drawSprite(g, new Position(x, y), new Position(floorX, floorY));
+                        drawSprite(g, new Position(x, y), tiles[y][x].getSpritePosition());
                         int alpha = 150; // 50% transparent
                         Color myColour = new Color(0, 0, 0, alpha);
                         g.setColor(myColour);
                         g.fillRect(columns * TILESIZE, rows * TILESIZE, TILESIZE, TILESIZE);
 
-
                     }
                 }
 
-                //g.fillRect(columns * TILESIZE, rows * TILESIZE, TILESIZE, TILESIZE);
-                //g.setColor(Color.blue);
                 if (!gameInstance.getM().getTiles()[x][y].isSeen()) {
                     g.setColor(Color.black);
                     g.fillRect(columns * TILESIZE, rows * TILESIZE, TILESIZE, TILESIZE);
@@ -217,7 +208,7 @@ public class GamePanel extends JPanel {
     }
 
     /**
-     * Used for User interface menus and stuff
+     * Used for User interface, menus and stuff
      *
      * @param g
      * @param pos    - Position on the map
@@ -327,7 +318,6 @@ public class GamePanel extends JPanel {
             }
         }
     }
-
 
     private void testMonsters(Graphics g, Map m) {
         int i = 0;
